@@ -40,6 +40,27 @@ CREATE TABLE tasks (
     CONSTRAINT tasks_title_not_blank CHECK (LENGTH(BTRIM(title)) > 0)
 );
 
+-- Keeps a durable record of task status changes made by authenticated users.
+-- task_id becomes NULL if an Admin deletes the task, preserving the audit event.
+CREATE TABLE audit_log (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    task_id BIGINT,
+    user_id BIGINT NOT NULL,
+    action VARCHAR(80) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT audit_log_task_fkey
+        FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE SET NULL,
+    CONSTRAINT audit_log_user_fkey
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT,
+    CONSTRAINT audit_log_action_not_blank CHECK (LENGTH(BTRIM(action)) > 0)
+);
+
+-- Supports retrieving a task's audit history in chronological order.
+CREATE INDEX audit_log_task_created_at_idx ON audit_log (task_id, created_at DESC);
+
+-- Supports retrieving actions performed by a user in chronological order.
+CREATE INDEX audit_log_user_created_at_idx ON audit_log (user_id, created_at DESC);
+
 -- Supports the Admin task list ordered by newest task first.
 CREATE INDEX tasks_created_at_idx ON tasks (created_at DESC);
 
