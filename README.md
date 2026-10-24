@@ -5,7 +5,7 @@
 ## Tech Stack (ส่วนที่ 3)
 
 - **JavaScript + React** — แบ่งหน้าจอเป็น component และเก็บ state ผู้ใช้เพื่อแสดงหน้าตาม role
-- **Vite** — dev server และ build สำหรับแอปขนาดเล็ก ตั้งค่าไม่มาก และรันผ่าน `npm run dev`
+- **Vite** — dev server และ build สำหรับแอปขนาดเล็ก ตั้งค่าไม่มาก และรันผ่าน `npm run dev`; ใน PowerShell ใช้ `npm.cmd run dev` เพื่อเรียก Windows command shim โดยตรง
 - **React Router** — จัดการ URL `/admin`, `/employee` และ redirect ตามสิทธิ์
 - **React Context** — แชร์ผู้ใช้ที่ Login ระหว่าง route guard และหน้า โดยไม่เพิ่ม state library
 - **CSS** — จัดหน้าจอ desktop/mobile โดยไม่เพิ่ม UI framework
@@ -18,9 +18,11 @@ Vite ต้องใช้ Node.js 20.19+ หรือ 22.12+.
 
 ```bash
 cd section-3
-npm install
-npm run dev
+npm.cmd install
+npm.cmd run dev
 ```
+
+บน macOS/Linux ใช้ `npm install` และ `npm run dev` ได้ตามปกติ
 
 เปิด URL ที่ Vite แสดงใน terminal (ปกติคือ `http://localhost:5173`)
 
@@ -36,7 +38,7 @@ npm run dev
 
 ## Database Design (ส่วนที่ 2)
 
-สคีมาฐานข้อมูล PostgreSQL อยู่ที่ [`section-2/schema.sql`](section-2/schema.sql): ตาราง `users`, `projects`, `tasks` มี PK/FK, role/status constraints และ indexes สำหรับรายการงานตามผู้รับผิดชอบ โครงการ และสถานะ
+สคีมาฐานข้อมูล PostgreSQL อยู่ที่ [`section-2/schema.sql`](section-2/schema.sql): ตาราง `users`, `projects`, `tasks` และ `audit_log` มี PK/FK, role/status constraints และ indexes สำหรับรายการงานตามผู้รับผิดชอบ โครงการ และสถานะ รวมถึงประวัติการเปลี่ยนสถานะ
 
 ## โครงสร้าง
 
