@@ -4,22 +4,39 @@
 
 ## Tech Stack (ส่วนที่ 3)
 
-- **JavaScript + React** — UI แบ่งเป็นหน้าและ component ได้ และใช้ state ตาม role เพื่อแสดงงานของ Admin หรือ Employee
-- **Vite** — เปิด dev server สำหรับแอป React ได้ด้วยคำสั่ง `npm run dev` และมีการตั้งค่าน้อย เหมาะกับงานสาธิตขนาดเล็ก
-- **React Router** — รองรับ URL `/admin` และ `/employee` พร้อม route guard และ redirect ตาม role ที่โจทย์กำหนด
-- **React Context** — เก็บผู้ใช้ที่ Login อยู่ให้หน้าและ route guard อ่านร่วมกัน โดยไม่ต้องส่ง props ผ่านหลายชั้น
-- **CSS** — จัดรูปแบบหน้าจอโดยไม่เพิ่ม UI framework ที่ไม่จำเป็นกับฟีเจอร์ชุดนี้
+- **JavaScript + React** — แบ่งหน้าจอเป็น component และเก็บ state ผู้ใช้เพื่อแสดงหน้าตาม role
+- **Vite** — dev server และ build สำหรับแอปขนาดเล็ก ตั้งค่าไม่มาก และรันผ่าน `npm run dev`
+- **React Router** — จัดการ URL `/admin`, `/employee` และ redirect ตามสิทธิ์
+- **React Context** — แชร์ผู้ใช้ที่ Login ระหว่าง route guard และหน้า โดยไม่เพิ่ม state library
+- **CSS** — จัดหน้าจอ desktop/mobile โดยไม่เพิ่ม UI framework
 
-ส่วนที่ 3 ใช้ mock API ภายในแอป (Promise + `setTimeout`) ตามโจทย์ จึงไม่ต้องติดตั้ง backend หรือเชื่อมฐานข้อมูลจริง
+ส่วนที่ 3 ใช้ mock API (Promise + `setTimeout`) จึงไม่ต้องมี backend หรือฐานข้อมูลจริง
+
+## วิธีรันส่วนที่ 3
+
+Vite ต้องใช้ Node.js 20.19+ หรือ 22.12+.
+
+```bash
+cd section-3
+npm install
+npm run dev
+```
+
+เปิด URL ที่ Vite แสดงใน terminal (ปกติคือ `http://localhost:5173`)
+
+### บัญชีทดสอบ
+
+| Role | Username |
+| --- | --- |
+| Admin | `admin` |
+| Employee | `employee1` |
+| Employee | `employee2` |
+
+หน้า Login มีคำแนะนำบัญชีและปุ่มเลือกบัญชีทดลอง พิมพ์ username อื่นเพื่อดู error ได้ ข้อมูล Task เป็น mock data และกลับสู่ค่าเริ่มต้นเมื่อ reload
 
 ## Database Design (ส่วนที่ 2)
 
-สคีมาฐานข้อมูลจริงสำหรับ PostgreSQL อยู่ที่ [`section-2/schema.sql`](section-2/schema.sql):
-
-- `users` เก็บชื่อผู้ใช้และ role พร้อม unique username และข้อจำกัด role ที่อนุญาต
-- `projects` เก็บโครงการและผู้สร้าง โดยอ้างอิงผู้ใช้ด้วย foreign key
-- `tasks` เก็บงาน โครงการ ผู้รับผิดชอบ สถานะ และเวลา พร้อม foreign key และ CHECK จำกัดสถานะเป็น `To Do` หรือ `Done`
-- Indexes รองรับรายการงานทั้งหมด, งานในโครงการ, งานของพนักงาน และงานของพนักงานที่กรองตามสถานะ
+สคีมาฐานข้อมูล PostgreSQL อยู่ที่ [`section-2/schema.sql`](section-2/schema.sql): ตาราง `users`, `projects`, `tasks` มี PK/FK, role/status constraints และ indexes สำหรับรายการงานตามผู้รับผิดชอบ โครงการ และสถานะ
 
 ## โครงสร้าง
 
@@ -27,6 +44,4 @@
 - `section-2/` — Tech Stack & Database Design
 - `section-3/` — Web Implementation
 - `section-4/` — Debugging & Code Review
-
-วิธีติดตั้ง วิธีรัน และบัญชีทดสอบจะเพิ่มเมื่อทำส่วนที่ 3 เสร็จ
 
